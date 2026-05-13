@@ -200,7 +200,7 @@ security_TG_BOT/
 
 ## 安全性說明
 
-本系統的安全性審查報告見 [docs/SECURITY-REVIEW-2026-02-07.md](docs/SECURITY-REVIEW-2026-05-14.md)，識別並記錄了已知風險與對應的緩解措施。
+本系統的安全性審查報告見 [docs/SECURITY-REVIEW-2026-05-14.md](docs/SECURITY-REVIEW-2026-05-14.md)，識別並記錄了已知風險與對應的緩解措施。
 
 生產環境部署前建議：
 - 啟用 SSL 憑證驗證（或使用 CA 簽發憑證）
