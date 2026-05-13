@@ -1,0 +1,60 @@
+# FortiGate Auto-Ban System - Docker Compose
+# 使用方式: docker-compose up -d
+# 兼容 docker-compose 1.29.2+
+
+version: '3.8'
+
+services:
+  autoban-system:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fortigate-autoban
+    restart: unless-stopped
+
+    # 環境變數 (可覆蓋 .env 檔案)
+    environment:
+      - PYTHONUNBUFFERED=1
+      - USE_REAL_FORTIGATE=${USE_REAL_FORTIGATE:-false}
+
+    # 環境變數檔案
+    env_file:
+      - scripts/.env
+
+    # 網路設定
+    ports:
+      - "5141:5141/udp"  # Syslog 接收端口
+
+    # 掛載日誌目錄 (持久化)
+    volumes:
+      - ./logs:/app/logs
+      - ./scripts/.env:/app/.env:ro  # 唯讀掛載環境變數
+
+    # 資源限制 (使用 docker run 參數格式，兼容舊版)
+    mem_limit: 512m
+    memswap_limit: 512m
+    cpus: 1.0
+
+    # 健康檢查
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import socket; s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM); s.bind((\"\", 0)); s.close()' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+    # 日誌設定 (防止日誌過大)
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    # 網路模式
+    networks:
+      - autoban-network
+
+# 網路定義
+networks:
+  autoban-network:
+    driver: bridge

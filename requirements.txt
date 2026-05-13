@@ -1,0 +1,21 @@
+# Core dependencies
+python-telegram-bot==20.7
+httpx==0.25.2
+redis==5.0.1
+pydantic==2.5.3
+pydantic-settings==2.1.0
+tenacity==8.2.3
+asyncio-dgram==2.1.2
+python-dotenv==1.0.0
+loguru==0.7.2
+
+# Development dependencies
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+ruff==0.1.8
+mypy==1.7.1
+fakeredis==2.20.1
+
+# Optional: Monitoring
+prometheus-client==0.19.0
